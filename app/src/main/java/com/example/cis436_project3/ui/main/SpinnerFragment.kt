@@ -7,10 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.cis436_project3.R
+import com.example.cis436_project3.databinding.SpinnerFragmentBinding
 
-class SpinnerFragment : Fragment() {
+class SpinnerFragment : Fragment()
+{
+    private var _binding : SpinnerFragmentBinding? = null
+    private val binding get() = _binding!!
 
-    companion object {
+    companion object
+    {
         fun newInstance() = SpinnerFragment()
     }
 
@@ -19,11 +24,14 @@ class SpinnerFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        return inflater.inflate(R.layout.`spinner_fragment`, container, false)
+    ): View
+    {
+        _binding = SpinnerFragmentBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
+    override fun onActivityCreated(savedInstanceState: Bundle?)
+    {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         // TODO: Use the ViewModel
