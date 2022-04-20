@@ -44,10 +44,10 @@ class MainActivity : AppCompatActivity()
             start()
         }
 
-        val url = "https://thecatapi.com/v1/images/search"
+        val url = "https://api.thecatapi.com/v1/images/search"
 
-        val request = object: StringRequest(Request.Method.GET, url,
-            Response.Listener<String>{response -> textView.text = "%s".format(response.toString())},
+        val request = object: JsonArrayRequest(Request.Method.GET, url, null,
+            Response.Listener{response -> textView.text = "%s".format(response.toString())},
             Response.ErrorListener {error -> textView.text = "Error: %s".format(error.toString())})
         {
             override fun getHeaders() : MutableMap<String, String>
