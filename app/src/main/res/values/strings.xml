@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">CIS436_Project3</string>
     <string name="breed_drop_down">Breed Drop Down</string>
+    <string-array name="breeds">
+        <item>Abyssinian</item>
+        <item>Aegean</item>
+    </string-array>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

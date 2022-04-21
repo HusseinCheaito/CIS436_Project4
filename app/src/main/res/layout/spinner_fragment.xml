@@ -14,6 +14,7 @@
         android:backgroundTint="@color/grey"
         android:contentDescription="@string/breed_drop_down"
         android:textAlignment="center"
+        android:entries="@array/breeds"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.529"
