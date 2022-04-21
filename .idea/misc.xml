@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Bailey/AndroidStudioProjects/CIS436_Project3-main/app/src/main/res/layout-land/main_activity.xml" value="0.2" />
+        <entry key="..\:/Users/Bailey/AndroidStudioProjects/CIS436_Project3-main/app/src/main/res/layout/fragment_scroll_view.xml" value="0.33" />
         <entry key="..\:/Users/Bailey/AndroidStudioProjects/CIS436_Project3-main/app/src/main/res/layout/main_activity.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Bailey/AndroidStudioProjects/CIS436_Project3-main/app/src/main/res/layout/spinner_fragment.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Bailey/AndroidStudioProjects/CIS436_Project3/app/src/main/res/layout/fragment_scroll_view.xml" value="0.20925925925925926" />

@@ -22,11 +22,10 @@ import com.squareup.picasso.Picasso
 import org.json.JSONArray
 import org.json.JSONObject
 
-class ScrollViewFragment : Fragment() {
+class ScrollViewFragment : Fragment()
+{
     private var _binding: FragmentScrollViewBinding? = null
     private val binding get() = _binding!!
-
-
 
     companion object {
         fun newInstance() = ScrollViewFragment()
@@ -39,25 +38,26 @@ class ScrollViewFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentScrollViewBinding.inflate(inflater, container, false)
-
         return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+    }
 
-        val textView = binding.testText
+    fun RequestCat(catID : String)
+    {
+
+        val url = "https://api.thecatapi.com/v1/images/search?breed_ids=" + catID
+
         var breedText = binding.breedText
         var temperText = binding.temperText
         var originText = binding.originText
         var lifeText = binding.lifeText
         var image: ImageView = binding.imageView
 
-
         val requestQueue = Volley.newRequestQueue(getActivity()?.getApplicationContext())
-
-        val url = "https://api.thecatapi.com/v1/images/search?breed_ids=beng"
 
         val request = object : JsonArrayRequest(
             Request.Method.GET, url, null,
@@ -89,7 +89,7 @@ class ScrollViewFragment : Fragment() {
                 lifeText.text = "Lifespan: %s".format(lifespan) + " years"
             },
             Response.ErrorListener { error ->
-                textView.text = "Error: %s".format(error.toString())
+                Log.e("ERROR", "%s".format(error.toString()))
             })
         {
             override fun getHeaders(): MutableMap<String, String> {
@@ -101,6 +101,12 @@ class ScrollViewFragment : Fragment() {
         }
 
         requestQueue.add(request)
+    }
+
+    override fun onDestroyView()
+    {
+        super.onDestroyView()
+        _binding = null
     }
 
 }
