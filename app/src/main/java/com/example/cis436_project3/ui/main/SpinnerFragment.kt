@@ -1,17 +1,22 @@
 package com.example.cis436_project3.ui.main
 
+import android.content.Context
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewParent
 import android.widget.*
+import android.widget.AdapterView.OnItemSelectedListener
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.Volley
 import com.example.cis436_project3.databinding.SpinnerFragmentBinding
+import java.lang.ClassCastException
+
 
 class SpinnerFragment : Fragment()
 {
@@ -23,6 +28,7 @@ class SpinnerFragment : Fragment()
         fun newInstance() = SpinnerFragment()
     }
 
+
     private lateinit var viewModel: MainViewModel
 
     override fun onCreateView(
@@ -31,8 +37,31 @@ class SpinnerFragment : Fragment()
     ): View
     {
         _binding = SpinnerFragmentBinding.inflate(inflater, container, false)
+        binding.breedDropDown.onItemSelectedListener =
+            object: AdapterView.OnItemSelectedListener{
+
+                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                   var newItem = binding.breedDropDown.selectedItem
+
+                }
+
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+                    TODO("Not yet implemented")
+                }
+            }
+
+
+
+
         return binding.root
+
     }
+
+    private fun spinnerChanged(view: View,s: String){
+
+    }
+
+
 
     override fun onActivityCreated(savedInstanceState: Bundle?)
     {
@@ -84,3 +113,4 @@ class SpinnerFragment : Fragment()
     }
 
 }
+

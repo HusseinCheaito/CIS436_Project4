@@ -17,6 +17,8 @@ import com.android.volley.toolbox.*
 import com.example.cis436_project3.R
 import com.example.cis436_project3.databinding.FragmentScrollViewBinding
 import com.google.android.material.internal.ContextUtils.getActivity
+import com.squareup.picasso.Picasso
+
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -63,7 +65,8 @@ class ScrollViewFragment : Fragment() {
                 //Image
                 val firstObj = response.getJSONObject(0)
                 val imageURL = firstObj.getString("url")
-                textView.text = "%s".format(imageURL)
+
+                Picasso.with(context).load(imageURL).into(image)
 
                 //Breed info
                 val breedArray = firstObj.getJSONArray("breeds")
