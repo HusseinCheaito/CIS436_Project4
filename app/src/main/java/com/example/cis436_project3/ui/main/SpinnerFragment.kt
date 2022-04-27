@@ -1,5 +1,6 @@
 package com.example.cis436_project3.ui.main
 
+import android.R
 import android.content.Context
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -61,28 +62,11 @@ class SpinnerFragment : Fragment()
             {
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long)
                 {
-                   var catNum = binding.breedDropDown.selectedItemPosition
+                   var charNum = binding.breedDropDown.selectedItemPosition+1
 
-                    val requestQueue = Volley.newRequestQueue(getActivity()?.getApplicationContext())
+                            itemSelected(charNum.toString())
 
-                    val url = "https://api.thecatapi.com/v1/breeds"
-
-                    val request = JsonArrayRequest(
-                        Request.Method.GET, url, null,
-                        Response.Listener { response ->
-                            val jObject = response.getJSONObject(catNum)
-                            val breedID = jObject.getString("id")
-                            viewModel.setSpinnerItem(breedID)
-                            Log.d("breed id", breedID.toString())
-                            Log.d("TEST GET", viewModel.getSpinnerItem())
-                            itemSelected(viewModel.getSpinnerItem())
-                        },
-                        Response.ErrorListener { error ->
-
-                            Log.e("error", "%s".format(error.toString()))
-                        })
-
-                    requestQueue.add(request)
+                    //Differentiate for films in scrollview frag
 
                 }
 
@@ -131,6 +115,8 @@ class SpinnerFragment : Fragment()
 //
 //        }
 
+            var requestArray = mutableListOf<JsonObjectRequest>()
+
             var request = JsonObjectRequest(
                 Request.Method.GET, url, null,
                 Response.Listener { response ->
@@ -146,7 +132,7 @@ class SpinnerFragment : Fragment()
 
                     val adapter = ArrayAdapter(
                         requireContext(),
-                        android.R.layout.simple_spinner_item, nameList
+                        R.layout.simple_spinner_item, nameList
                     )
                     spinnerText.adapter = adapter
 
@@ -157,12 +143,20 @@ class SpinnerFragment : Fragment()
 
                     val adapter = ArrayAdapter(
                         requireContext(),
-                        android.R.layout.simple_spinner_item, errorMsg
+                        R.layout.simple_spinner_item, errorMsg
                     )
                     spinnerText.adapter = adapter
                 })
 
+//            for(i in 0 until requestArray.length()){
+//
+//                request=requestArray.get(i)
+//                requestQueue.add(request)
+//
+//            }
+
             requestQueue.add(request)
+
         }
         else if (spinnerType == "films")
         {
@@ -185,7 +179,7 @@ class SpinnerFragment : Fragment()
 
                     val adapter = ArrayAdapter(
                         requireContext(),
-                        android.R.layout.simple_spinner_item, nameList
+                        R.layout.simple_spinner_item, nameList
                     )
                     spinnerText.adapter = adapter
 
@@ -196,7 +190,7 @@ class SpinnerFragment : Fragment()
 
                     val adapter = ArrayAdapter(
                         requireContext(),
-                        android.R.layout.simple_spinner_item, errorMsg
+                        R.layout.simple_spinner_item, errorMsg
                     )
                     spinnerText.adapter = adapter
                 })
