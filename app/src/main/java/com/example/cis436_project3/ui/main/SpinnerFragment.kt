@@ -8,12 +8,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewParent
 import android.widget.*
-import android.widget.AdapterView.OnItemSelectedListener
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonArrayRequest
+import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.cis436_project3.databinding.SpinnerFragmentBinding
 import java.lang.ClassCastException
@@ -113,53 +112,59 @@ class SpinnerFragment : Fragment()
         activityCallback?.ItemSelected(id)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?)
-    {
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
-       var spinnerText = binding.breedDropDown
+        var spinnerText = binding.breedDropDown
 
         val requestQueue = Volley.newRequestQueue(getActivity()?.getApplicationContext())
 
-        val url = "https://api.thecatapi.com/v1/breeds"
+        var url = "https://swapi.dev/api/people/"
 
-        val breedList = mutableListOf<String>()
+        val nameList = mutableListOf<String>()
 
-        val request = object : JsonArrayRequest(
-            Request.Method.GET, url, null,
-            Response.Listener { response ->
+        //Cant use this to loop request, since request is needed for requestQueue.add()
 
-                for(i in 0 until response.length()){
+//        while (!url.isNullOrEmpty()) {
+//
+//            url = response.getString("next")
+//
+//        }
 
-                    val jObject = response.getJSONObject(i)
-                    breedList.add(jObject.getString("name"))
+            var request = object : JsonObjectRequest(
+                Request.Method.GET, url, null,
+                Response.Listener { response ->
 
-                    }
+                        val resultArray = response.getJSONArray("results")
 
-                val adapter = ArrayAdapter(requireContext(),
-                    android.R.layout.simple_spinner_item, breedList)
-                spinnerText.adapter = adapter
+                        for (i in 0 until resultArray.length()) {
 
-            },
-            Response.ErrorListener { error ->
+                            val jObject = resultArray.getJSONObject(i)
+                            nameList.add(jObject.getString("name"))
 
-                val errorMsg = arrayOf(error)
+                        }
 
-                val adapter = ArrayAdapter(requireContext(),
-                    android.R.layout.simple_spinner_item, errorMsg)
-                spinnerText.adapter = adapter
-            })
-        {
-            override fun getHeaders(): MutableMap<String, String> {
-                val headers = HashMap<String, String>()
-                headers["x-api-key"] = "cff029ba-ea55-493d-b527-06b4a6813175"
-                return headers
-            }
+                        val adapter = ArrayAdapter(
+                            requireContext(),
+                            android.R.layout.simple_spinner_item, nameList
+                        )
+                        spinnerText.adapter = adapter
 
-        }
+                },
+                Response.ErrorListener { error ->
+
+                    val errorMsg = arrayOf(error)
+
+                    val adapter = ArrayAdapter(
+                        requireContext(),
+                        android.R.layout.simple_spinner_item, errorMsg
+                    )
+                    spinnerText.adapter = adapter
+                }) {}
 
         requestQueue.add(request)
+
     }
 
     override fun onDestroyView()
