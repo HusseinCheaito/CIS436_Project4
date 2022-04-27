@@ -2,12 +2,18 @@ package com.example.cis436_project3
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.TextUtils.replace
-import androidx.fragment.app.Fragment
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
+import androidx.fragment.app.FragmentActivity
+import com.android.volley.Request
+import com.android.volley.RequestQueue
+import com.android.volley.Response
 import com.android.volley.VolleyError
 import com.android.volley.toolbox.*
 import com.example.cis436_project3.databinding.MainActivityBinding
-import com.example.cis436_project3.ui.main.MainViewModel
 import com.example.cis436_project3.ui.main.ScrollViewFragment
 import com.example.cis436_project3.ui.main.SpinnerFragment
 import org.json.JSONArray
@@ -19,9 +25,6 @@ class MainActivity : AppCompatActivity(), SpinnerFragment.ControlListener
     {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
-
-        val moviesFragment = MainViewModel()
-
     }
 
     override fun ItemSelected(id : String)
@@ -29,11 +32,5 @@ class MainActivity : AppCompatActivity(), SpinnerFragment.ControlListener
         val scrollViewFragment : ScrollViewFragment = supportFragmentManager.findFragmentById(R.id.ScrollViewFragmentContainer) as ScrollViewFragment
         scrollViewFragment.RequestCat(id)
     }
-
-
 }
-
-
-
-
 
