@@ -5,17 +5,26 @@ import androidx.lifecycle.ViewModel
 
 class MainViewModel : ViewModel()
 {
-    private var catID : String = "abys"
+    private var spinnerItem : String = "abys"
+    private var spinnerType : String = "people"
 
-    fun setID(id : String)
+    fun setSpinnerItem(id : String)
     {
-        catID = id
-        Log.d("setID", catID)
+        spinnerItem = id
     }
 
-    fun getID() : String
+    fun getSpinnerItem() : String
     {
-        Log.d("getID", catID)
-        return catID
+        return spinnerItem
+    }
+
+    fun setSpinnerType(type : String)
+    {
+        spinnerType = type
+    }
+
+    fun getSpinnerType() : String
+    {
+        return spinnerType
     }
 }

@@ -28,9 +28,6 @@ class SpinnerFragment : Fragment()
     interface ControlListener
     {
         fun ItemSelected(id : String)
-        {
-
-        }
     }
 
     companion object
@@ -70,28 +67,20 @@ class SpinnerFragment : Fragment()
 
                     val url = "https://api.thecatapi.com/v1/breeds"
 
-                    val request = object : JsonArrayRequest(
+                    val request = JsonArrayRequest(
                         Request.Method.GET, url, null,
                         Response.Listener { response ->
                             val jObject = response.getJSONObject(catNum)
                             val breedID = jObject.getString("id")
-                            viewModel.setID(breedID)
+                            viewModel.setSpinnerItem(breedID)
                             Log.d("breed id", breedID.toString())
-                            Log.d("TEST GET", viewModel.getID())
-                            itemSelected(viewModel.getID())
+                            Log.d("TEST GET", viewModel.getSpinnerItem())
+                            itemSelected(viewModel.getSpinnerItem())
                         },
                         Response.ErrorListener { error ->
 
                             Log.e("error", "%s".format(error.toString()))
                         })
-                    {
-                        override fun getHeaders(): MutableMap<String, String> {
-                            val headers = HashMap<String, String>()
-                            headers["x-api-key"] = "cff029ba-ea55-493d-b527-06b4a6813175"
-                            return headers
-                        }
-
-                    }
 
                     requestQueue.add(request)
 
@@ -112,19 +101,29 @@ class SpinnerFragment : Fragment()
         activityCallback?.ItemSelected(id)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
+    override fun onActivityCreated(savedInstanceState: Bundle?)
+    {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+
+        PopulateSpinner(viewModel.getSpinnerType())
+    }
+
+    fun PopulateSpinner(spinnerType : String)
+    {
+        viewModel.setSpinnerType(spinnerType)
 
         var spinnerText = binding.breedDropDown
 
         val requestQueue = Volley.newRequestQueue(getActivity()?.getApplicationContext())
 
-        var url = "https://swapi.dev/api/people/"
+        if (spinnerType == "people")
+        {
+            var url = "https://swapi.dev/api/people/"
 
-        val nameList = mutableListOf<String>()
+            val nameList = mutableListOf<String>()
 
-        //Cant use this to loop request, since request is needed for requestQueue.add()
+            //Cant use this to loop request, since request is needed for requestQueue.add()
 
 //        while (!url.isNullOrEmpty()) {
 //
@@ -132,24 +131,24 @@ class SpinnerFragment : Fragment()
 //
 //        }
 
-            var request = object : JsonObjectRequest(
+            var request = JsonObjectRequest(
                 Request.Method.GET, url, null,
                 Response.Listener { response ->
 
-                        val resultArray = response.getJSONArray("results")
+                    val resultArray = response.getJSONArray("results")
 
-                        for (i in 0 until resultArray.length()) {
+                    for (i in 0 until resultArray.length()) {
 
-                            val jObject = resultArray.getJSONObject(i)
-                            nameList.add(jObject.getString("name"))
+                        val jObject = resultArray.getJSONObject(i)
+                        nameList.add(jObject.getString("name"))
 
-                        }
+                    }
 
-                        val adapter = ArrayAdapter(
-                            requireContext(),
-                            android.R.layout.simple_spinner_item, nameList
-                        )
-                        spinnerText.adapter = adapter
+                    val adapter = ArrayAdapter(
+                        requireContext(),
+                        android.R.layout.simple_spinner_item, nameList
+                    )
+                    spinnerText.adapter = adapter
 
                 },
                 Response.ErrorListener { error ->
@@ -161,9 +160,50 @@ class SpinnerFragment : Fragment()
                         android.R.layout.simple_spinner_item, errorMsg
                     )
                     spinnerText.adapter = adapter
-                }) {}
+                })
 
-        requestQueue.add(request)
+            requestQueue.add(request)
+        }
+        else if (spinnerType == "films")
+        {
+            var url = "https://swapi.dev/api/films/"
+
+            val nameList = mutableListOf<String>()
+
+            var request = JsonObjectRequest(
+                Request.Method.GET, url, null,
+                Response.Listener { response ->
+
+                    val resultArray = response.getJSONArray("results")
+
+                    for (i in 0 until resultArray.length()) {
+
+                        val jObject = resultArray.getJSONObject(i)
+                        nameList.add(jObject.getString("title"))
+
+                    }
+
+                    val adapter = ArrayAdapter(
+                        requireContext(),
+                        android.R.layout.simple_spinner_item, nameList
+                    )
+                    spinnerText.adapter = adapter
+
+                },
+                Response.ErrorListener { error ->
+
+                    val errorMsg = arrayOf(error)
+
+                    val adapter = ArrayAdapter(
+                        requireContext(),
+                        android.R.layout.simple_spinner_item, errorMsg
+                    )
+                    spinnerText.adapter = adapter
+                })
+
+            requestQueue.add(request)
+        }
+
 
     }
 

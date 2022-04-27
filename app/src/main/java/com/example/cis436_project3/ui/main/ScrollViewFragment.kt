@@ -48,7 +48,6 @@ class ScrollViewFragment : Fragment()
 
     fun RequestCat(catID : String)
     {
-
         val url = "https://api.thecatapi.com/v1/images/search?breed_ids=" + catID
 
         var breedText = binding.breedText
@@ -59,7 +58,7 @@ class ScrollViewFragment : Fragment()
 
         val requestQueue = Volley.newRequestQueue(getActivity()?.getApplicationContext())
 
-        val request = object : JsonArrayRequest(
+        val request = JsonArrayRequest(
             Request.Method.GET, url, null,
             Response.Listener { response ->
                 //Image
@@ -91,14 +90,6 @@ class ScrollViewFragment : Fragment()
             Response.ErrorListener { error ->
                 Log.e("ERROR", "%s".format(error.toString()))
             })
-        {
-            override fun getHeaders(): MutableMap<String, String> {
-                val headers = HashMap<String, String>()
-                headers["x-api-key"] = "cff029ba-ea55-493d-b527-06b4a6813175"
-                return headers
-            }
-
-        }
 
         requestQueue.add(request)
     }
