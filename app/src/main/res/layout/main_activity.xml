@@ -21,8 +21,8 @@
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/ScrollViewFragmentContainer"
         android:name="com.example.cis436_project3.ui.main.ScrollViewFragment"
-        android:layout_width="405dp"
-        android:layout_height="585dp"
+        android:layout_width="395dp"
+        android:layout_height="436dp"
         android:layout_marginTop="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

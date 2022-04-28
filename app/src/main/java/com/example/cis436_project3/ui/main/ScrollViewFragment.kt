@@ -6,14 +6,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.lifecycle.ViewModelProvider
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.toolbox.*
 import com.example.cis436_project3.databinding.FragmentScrollViewBinding
-import com.squareup.picasso.Picasso
 
 class ScrollViewFragment : Fragment()
 {
@@ -47,7 +45,8 @@ class ScrollViewFragment : Fragment()
         var heightText = binding.heightText
         var weightText = binding.weightText
         var birthYearText = binding.birthYearText
-        var image: ImageView = binding.imageView
+        var homeworldText = binding.homeworldText
+        //var image: ImageView = binding.imageView
 
         val requestQueue = Volley.newRequestQueue(getActivity()?.getApplicationContext())
 
@@ -55,10 +54,9 @@ class ScrollViewFragment : Fragment()
             Request.Method.GET, url, null,
             Response.Listener { response ->
                 //Image
-                val imageURL = response.getString("url")
+                //val imageURL = firstObj.getString("url")
 
-
-                Picasso.with(context).load(imageURL).into(image)
+                //Picasso.with(context).load(imageURL).into(image)
 
                 //name
                 val charName = response.getString("name")
@@ -76,6 +74,10 @@ class ScrollViewFragment : Fragment()
                 val birthyear = response.getString("birth_year")
                 birthYearText.text = "Birth Year: %s".format(birthyear)
 
+                //homeworld
+                val homeworld = response.getString("homeworld")
+                val homeworldRequest = getHomeworld(homeworld)
+                homeworldText.text="Homeworld: %s".format(homeworldRequest)
 
             },
             Response.ErrorListener { error ->
@@ -84,50 +86,6 @@ class ScrollViewFragment : Fragment()
 
         requestQueue.add(request)
     }
-
-    fun requestFilm(charID: String){
-        val url = "https://swapi.dev/api/films/" + charID + "/"
-        var filmNameText = binding.nameText
-        var releaseDateText = binding.heightText
-        var directorText = binding.weightText
-        var producerText = binding.birthYearText
-
-        val requestQueue = Volley.newRequestQueue(getActivity()?.getApplicationContext())
-
-        val request = JsonObjectRequest(
-            Request.Method.GET, url, null,
-            Response.Listener { response ->
-                //Image
-                val imageURL = response.getString("url")
-
-                //name
-                val charName = response.getString("title")
-                filmNameText.text = "Name: %s".format(charName)
-
-                //height
-                val release = response.getString("release_date")
-                releaseDateText.text = "Release: %s".format(release)
-
-                //weight
-                val director = response.getString("director")
-                directorText.text = "Director: %s".format(director)
-
-                //birthyear
-                val producer = response.getString("producer")
-                producerText.text = "Producer: %s".format(producer)
-
-
-            },
-            Response.ErrorListener { error ->
-                Log.e("ERROR", "%s".format(error.toString()))
-            })
-
-        requestQueue.add(request)
-
-
-    }
-
-
 
     //Gets name, but returns as initial value
     private fun getHomeworld(homeworld: String): String {
