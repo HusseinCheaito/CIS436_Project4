@@ -57,12 +57,12 @@ class SpinnerFragment : Fragment()
     ): View
     {
         _binding = SpinnerFragmentBinding.inflate(inflater, container, false)
-        binding.breedDropDown.onItemSelectedListener =
+        binding.DropDown.onItemSelectedListener =
             object: AdapterView.OnItemSelectedListener
             {
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long)
                 {
-                   var charNum = binding.breedDropDown.selectedItemPosition+1
+                   var charNum = binding.DropDown.selectedItemPosition+1
 
                             itemSelected(charNum.toString(),viewModel.getSpinnerType())
 
@@ -97,7 +97,7 @@ class SpinnerFragment : Fragment()
     {
         viewModel.setSpinnerType(spinnerType)
 
-        var spinnerText = binding.breedDropDown
+        var spinnerText = binding.DropDown
 
         val requestQueue = Volley.newRequestQueue(getActivity()?.getApplicationContext())
 
@@ -106,14 +106,6 @@ class SpinnerFragment : Fragment()
             var url = "https://swapi.dev/api/people/"
 
             val nameList = mutableListOf<String>()
-
-            //Cant use this to loop request, since request is needed for requestQueue.add()
-
-//        while (!url.isNullOrEmpty()) {
-//
-//            url = response.getString("next")
-//
-//        }
 
             var requestArray = mutableListOf<JsonObjectRequest>()
 
@@ -148,19 +140,12 @@ class SpinnerFragment : Fragment()
                     spinnerText.adapter = adapter
                 })
 
-//            for(i in 0 until requestArray.length()){
-//
-//                request=requestArray.get(i)
-//                requestQueue.add(request)
-//
-//            }
-
             requestQueue.add(request)
 
         }
         else if (spinnerType == "films")
         {
-            var url = "https://swapi.dev/api/films/"
+            var url = "https://swapi.dev/api/films"
 
             val nameList = mutableListOf<String>()
 

@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 
 class MainViewModel : ViewModel()
 {
-    private var spinnerItem : String = "abys"
+    private var spinnerItem : String = "Luke Skywalker"
     private var spinnerType : String = "people"
 
     fun setSpinnerItem(id : String)

@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import com.android.volley.Request
 import com.android.volley.RequestQueue
@@ -44,25 +45,47 @@ class ScrollViewFragment : Fragment()
         val url = "https://swapi.dev/api/people/" + charID + "/"
 
         var nameText = binding.nameText
+        var genderText = binding.genderText
+        var homeworldText = binding.homeworldText
+        var speciesText = binding.speciesText
         var heightText = binding.heightText
         var weightText = binding.weightText
+        var hairText = binding.hairText
+        var skinText = binding.skinText
+        var eyeText = binding.eyeText
         var birthYearText = binding.birthYearText
-        var image: ImageView = binding.imageView
+
 
         val requestQueue = Volley.newRequestQueue(getActivity()?.getApplicationContext())
 
         val request = JsonObjectRequest(
             Request.Method.GET, url, null,
             Response.Listener { response ->
-                //Image
-                val imageURL = response.getString("url")
-
-
-                Picasso.with(context).load(imageURL).into(image)
 
                 //name
                 val charName = response.getString("name")
                 nameText.text = "Name: %s".format(charName)
+
+                //gender
+                val gender = response.getString("gender")
+                genderText.text = "Gender: %s".format(gender)
+
+                //species
+                val speciesArray = response.getJSONArray("species")
+
+                if (speciesArray.length() < 1)
+                {
+                    speciesText.text = "Species: Human"
+                }
+                else
+                {
+                    val species = speciesArray.getString(0)
+                    RequestSpecies(species, speciesText)
+                }
+
+                //homeworld
+                val homeworld = response.getString("homeworld")
+                RequestHomeworld(homeworld, homeworldText)
 
                 //height
                 val height = response.getString("height")
@@ -71,6 +94,18 @@ class ScrollViewFragment : Fragment()
                 //weight
                 val weight = response.getString("mass")
                 weightText.text = "Weight: %s".format(weight) + "kg" //convert to lbs?
+
+                //hair color
+                val hair = response.getString("hair_color")
+                hairText.text = "Hair Color: %s".format(hair)
+
+                //skin color
+                val skin = response.getString("skin_color")
+                skinText.text = "Skin Color: %s".format(skin)
+
+                //eye color
+                val eye = response.getString("eye_color")
+                eyeText.text = "Eye Color: %s".format(eye)
 
                 //birthyear
                 val birthyear = response.getString("birth_year")
@@ -85,37 +120,90 @@ class ScrollViewFragment : Fragment()
         requestQueue.add(request)
     }
 
-    fun requestFilm(charID: String){
-        val url = "https://swapi.dev/api/films/" + charID + "/"
+    fun RequestHomeworld(homeworldURL : String, homeworldText : TextView)
+    {
+        val requestQueue = Volley.newRequestQueue(getActivity()?.getApplicationContext())
+
+        val homeworldRequest = JsonObjectRequest(
+            Request.Method.GET, homeworldURL, null,
+            Response.Listener { response ->
+                val homeworld = response.getString("name")
+                homeworldText.text = "Homeworld: %s".format(homeworld)
+            },
+            Response.ErrorListener { error ->
+                Log.e("ERROR", "%s".format(error.toString()))
+            })
+
+        requestQueue.add(homeworldRequest)
+    }
+
+    fun RequestSpecies(speciesURL : String, speciesText : TextView)
+    {
+        val requestQueue = Volley.newRequestQueue(getActivity()?.getApplicationContext())
+
+        val speciesRequest = JsonObjectRequest(
+            Request.Method.GET, speciesURL, null,
+            Response.Listener { response ->
+                val species = response.getString("name")
+                speciesText.text = "Species: %s".format(species)
+            },
+            Response.ErrorListener { error ->
+                Log.e("ERROR", "%s".format(error.toString()))
+            })
+
+        requestQueue.add(speciesRequest)
+    }
+
+    fun requestFilm(filmID: String){
+        val url = "https://swapi.dev/api/films/" + filmID + "/"
         var filmNameText = binding.nameText
-        var releaseDateText = binding.heightText
-        var directorText = binding.weightText
-        var producerText = binding.birthYearText
+        var episodeText = binding.genderText
+        var releaseDateText = binding.speciesText
+        var directorText = binding.homeworldText
+        var producerText = binding.heightText
+        var openingText = binding.weightText
 
         val requestQueue = Volley.newRequestQueue(getActivity()?.getApplicationContext())
 
         val request = JsonObjectRequest(
             Request.Method.GET, url, null,
             Response.Listener { response ->
-                //Image
-                val imageURL = response.getString("url")
 
-                //name
-                val charName = response.getString("title")
-                filmNameText.text = "Name: %s".format(charName)
+                //title
+                val title = response.getString("title")
+                filmNameText.text = "Name: %s".format(title)
 
-                //height
+                //Episode
+                val episodeNum = response.getString("episode_id")
+                episodeText.text = "Episode: %s".format(episodeNum)
+
+                //release date
                 val release = response.getString("release_date")
                 releaseDateText.text = "Release: %s".format(release)
 
-                //weight
+                //director
                 val director = response.getString("director")
                 directorText.text = "Director: %s".format(director)
 
-                //birthyear
+                //producer
                 val producer = response.getString("producer")
                 producerText.text = "Producer: %s".format(producer)
 
+                //opening crawl
+                val opening = response.getString(("opening_crawl"))
+                openingText.text = "Opening Crawl: \n\n%s".format(opening)
+
+
+                //empty other text fields
+                val hairText = binding.hairText
+                val skinText = binding.skinText
+                val eyeText = binding.eyeText
+                val birthYearText = binding.birthYearText
+
+                hairText.text = ""
+                skinText.text = ""
+                eyeText.text = ""
+                birthYearText.text = ""
 
             },
             Response.ErrorListener { error ->
@@ -123,34 +211,6 @@ class ScrollViewFragment : Fragment()
             })
 
         requestQueue.add(request)
-
-
-    }
-
-
-
-    //Gets name, but returns as initial value
-    private fun getHomeworld(homeworld: String): String {
-
-        val requestQueue2 = Volley.newRequestQueue(getActivity()?.getApplicationContext())
-
-        var homeName = "TEST"
-
-        val request2 = JsonObjectRequest(
-            Request.Method.GET, homeworld, null,
-            Response.Listener { response ->
-
-                homeName = response.getString("name")
-
-            },
-            Response.ErrorListener { error ->
-                Log.e("ERROR", "%s".format(error.toString()))
-            })
-
-        requestQueue2.add(request2)
-
-        return homeName
-
     }
 
     override fun onDestroyView()
