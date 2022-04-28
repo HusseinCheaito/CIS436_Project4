@@ -39,7 +39,6 @@ class ScrollViewFragment : Fragment()
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
     }
 
-    //Request Character
     fun RequestCharacter(charID : String)
     {
         val url = "https://swapi.dev/api/people/" + charID + "/"
