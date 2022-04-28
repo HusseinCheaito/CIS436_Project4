@@ -14,16 +14,10 @@ class MainActivity : AppCompatActivity(), SpinnerFragment.ControlListener, Selec
         setContentView(R.layout.main_activity)
     }
 
-    override fun ItemSelected(id : String,spinnerType: String)
+    override fun ItemSelected(id : String)
     {
         val scrollViewFragment : ScrollViewFragment = supportFragmentManager.findFragmentById(R.id.ScrollViewFragmentContainer) as ScrollViewFragment
-
-        if(spinnerType == "people"){
-            scrollViewFragment.RequestCharacter(id)
-        }else if(spinnerType == "films"){
-            scrollViewFragment.requestFilm(id)
-        }
-
+        scrollViewFragment.RequestCharacter(id)
     }
 
     override fun ChangeSpinner(spinnerType : String)
