@@ -28,7 +28,7 @@ class SpinnerFragment : Fragment()
 
     interface ControlListener
     {
-        fun ItemSelected(id : String)
+        fun ItemSelected(id : String,spinnerType: String)
     }
 
     companion object
@@ -64,7 +64,7 @@ class SpinnerFragment : Fragment()
                 {
                    var charNum = binding.breedDropDown.selectedItemPosition+1
 
-                            itemSelected(charNum.toString())
+                            itemSelected(charNum.toString(),viewModel.getSpinnerType())
 
                     //Differentiate for films in scrollview frag
 
@@ -80,9 +80,9 @@ class SpinnerFragment : Fragment()
 
     }
 
-    private fun itemSelected(id : String)
+    private fun itemSelected(id : String,spinnerType: String)
     {
-        activityCallback?.ItemSelected(id)
+        activityCallback?.ItemSelected(id,spinnerType)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?)
